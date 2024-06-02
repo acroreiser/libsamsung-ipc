@@ -72,7 +72,7 @@ int i9300_boot(struct ipc_client *client)
         goto error;
     }
     ipc_client_log(client, "Opened modem link device");
-
+repeat:
     rc = xmm626_sec_modem_hci_power(0);
     if (rc < 0) {
         ipc_client_log(client, "Turning the modem off failed");
@@ -101,7 +101,7 @@ int i9300_boot(struct ipc_client *client)
     rc = xmm626_hsic_psi_send(client, modem_boot_fd, (void *) p, I9300_PSI_SIZE);
     if (rc < 0) {
         ipc_client_log(client, "Sending XMM626 HSIC PSI failed");
-        goto error;
+        goto repeat;
     }
     ipc_client_log(client, "Sent XMM626 HSIC PSI");
 
