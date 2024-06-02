@@ -476,6 +476,7 @@ int xmm626_sec_modem_poll(int fd, struct ipc_poll_fds *fds,
     int fd_max;
     unsigned int i;
     unsigned int count;
+    struct timeval to;
     int rc;
 
     if (fd < 0)
@@ -497,7 +498,11 @@ int xmm626_sec_modem_poll(int fd, struct ipc_poll_fds *fds,
         }
     }
 
-    rc = select(fd_max + 1, &set, NULL, NULL, timeout);
+    // Set 100 ms timeout to avoid CPU monopolizing by ofonod
+    to.tv_sec = 0;
+    to.tv_usec = 100000;
+
+    rc = select(fd_max + 1, &set, NULL, NULL, &to);
 
     if (FD_ISSET(fd, &set)) {
         status = ioctl(fd, IOCTL_MODEM_STATUS, 0);
