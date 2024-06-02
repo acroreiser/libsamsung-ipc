@@ -41,6 +41,8 @@
 #include <ipc.h>
 #include <ipc_devices.h>
 
+#define IPC_DEVICE_NAME "i9300"
+
 int ipc_device_detect(void)
 {
     char buffer[4096] = { 0 };
